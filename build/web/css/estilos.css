@@ -1,0 +1,32 @@
+#color_fondo {
+	background-color: #D8D8BF;
+	text-align: center;
+}
+#color_fondo_hijos {
+	background-color:  	#7F00FF;
+}
+
+.borde_cuadro{
+	padding: 4px;
+	line-height: 20px;
+	border: 1px solid rgb(221, 221, 221);
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.055);
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+ 	-moz-box-sizing: border-box; /*  Firefox, other Gecko */
+	 box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+body{
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.justificar{
+   text-align: justify;
+}
+
+.previsualizacion
+{
+    width: 100%;
+    height: 130px;
+}

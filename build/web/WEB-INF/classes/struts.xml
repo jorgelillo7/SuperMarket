@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="false" />
+
+    <!-- Configuration for the default package. -->
+    <package name="default" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="session" class="interceptor.SessionInterceptor" />
+            <interceptor-stack name="sessionExpirayStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="session"/>
+            </interceptor-stack>
+        </interceptors>
+        
+ 
+        <action name="Registrarse" class="action.cliente.RegistrarseAction">
+            <result name="SUCCESS">index.jsp</result>
+            <result name="ERROR">registro.jsp</result>
+        </action>
+     
+        <action name="ActualizarPerfil" class="action.cliente.ActualizarPerfilAction">
+              <interceptor-ref name="sessionExpirayStack" />
+            <result name="ERROR" type="dispatcher">perfil.jsp</result>
+            <result name="SUCCESS"  type="dispatcher" >perfil.jsp</result> 
+               <result name="session">errorSesion.jsp</result>
+        </action>
+        
+        <action name="CambioPassword" class="action.cliente.CambioPasswordAction">
+            <interceptor-ref name="sessionExpirayStack" />
+            <result name="SUCCESS" type="dispatcher">perfil.jsp</result>
+            <result name="ERROR" type="dispatcher">perfil.jsp</result>
+              <result name="session">errorSesion.jsp</result>
+        </action>
+        
+        <action name="VerClientes" class="action.admin.VerClientesAction">
+            <result name="SUCCESS" type="dispatcher">verClientes.jsp</result>
+            <result name="ERROR" type="dispatcher">admin.jsp</result>
+        </action>
+        
+        <action name="AnadirAdmin" class="action.admin.AnadirAdminAction">
+            <result name="ERROR" type="redirect">VerClientes</result>
+            <result name="SUCCESS" type="redirect">VerClientes</result>
+        </action>
+        
+        <action name="BanearClientes" class="action.admin.BanearClientesAction">
+            <result name="ERROR">admin.jsp</result>
+            <result name="SUCCESS" type="chain">VerClientes</result>
+        </action>
+        
+        <action name="BorrarCliente" class="action.admin.BorrarClienteAction">
+            <result name="ERROR">admin.jsp</result>
+            <result name="SUCCESS" type="chain">
+                 <param name="actionName">VerClientes</param>
+            </result>
+        </action>
+        
+        <action name="VerProductosAdmin" class="action.admin.VerProductosAdminAction">
+            <result name="SUCCESS">verProductosAdmin.jsp</result>
+            <result name="ERROR">index.jsp</result>
+        </action>
+        
+        <action name="MostrarProductos" class="action.admin.MostrarProductosAction">
+            <result name="ERROR">admin.jsp</result>
+            <result name="SUCCESS" type="chain">VerProductosAdmin</result>
+        </action>
+		
+        <action name="AnadirProducto" class="action.admin.AnadirProductoAction">
+            <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">image/png,image/jpeg</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="logger" />
+            <result name="ERROR">verProductosAdmin.jsp</result>
+            <result name="SUCCESS" type="chain">VerProductosAdmin</result>
+            <result name="input" type="chain">VerProductosAdmin</result>
+        </action>
+        
+        <action name="BorrarProducto" class="action.admin.BorrarProductoAction">
+            <result name="ERROR">admin.jsp</result>
+            <result name="SUCCESS" type="chain">VerProductosAdmin</result>
+        </action>
+        
+        <action name="VerDetallesProducto" class="action.admin.VerDetallesProductoAction">
+            <result name="SUCCESS" type="dispatcher">verDetallesProductoAdmin.jsp</result>
+            <result name="ERROR" type="dispatcher">index.jsp</result>
+        </action>
+        
+        <action name="ActualizarProducto" class="action.admin.ActualizarProductoAction">
+            <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">image/png,image/jpeg</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="timer" />
+            <result name="ERROR">verProductosAdmin.jsp</result>
+            <result>verDetallesProductoAdmin.jsp</result>
+            <result name="input" type ="chain">VerProductosAdmin</result>
+            <result name="SUCCESS" type ="chain">VerProductosAdmin</result>
+         
+        </action>
+        
+        <action name="VerProductos" class="action.cliente.MostrarProductosAction">
+            <result name="SUCCESS">mostrarproductos.jsp</result>
+            <result name="ERROR">index.jsp</result>
+        </action>
+        
+        <action name="Ofertas" class="action.cliente.MostrarOfertasAction">
+            <result name="SUCCESS" type="dispatcher">ofertas.jsp</result>
+            <result name="ERROR" type="dispatcher">index.jsp</result>
+        </action>  
+        
+        <action name="Buscar" class="action.cliente.BuscarAction">
+            <result name="SUCCESS">mostrarbusqueda.jsp</result>
+            <result name="ERROR">index.jsp</result>
+        </action>
+       
+        <action name="VerProducto" class="action.cliente.VerProductoAction">
+            <result name="SUCCESS">verDetallesProducto.jsp</result>
+            <result name="ERROR">index.jsp</result>
+        </action>
+        
+        <action name="AnadirProductoCesta" class="action.cliente.AnadirProductoCestaAction">
+            <result name="SUCCESS" type="dispatcher">cesta.jsp</result>
+        </action>
+        
+        <action name="EliminarProductoCesta" class="action.cliente.EliminarProductoCestaAction">
+            <result name="SUCCESS" >cesta.jsp</result>
+        </action>
+        
+        <action name="ActualizarCantidadProducto" class="action.cliente.ActualizarCantidadProductoCestaAction">
+             <interceptor-ref name="sessionExpirayStack" />
+            <result name="SUCCESS" >cesta.jsp</result>
+            <result name="session">errorSesion.jsp</result>
+        </action>
+
+        <action name="CrearPedido" class="action.cliente.CrearPedidoAction">
+               <interceptor-ref name="sessionExpirayStack" />
+            <result name="SUCCESS" >confirmarPedido.jsp</result>
+            <result name="ERROR" >cesta.jsp</result> 
+               <result name="session">errorSesion.jsp</result>
+        </action>
+        
+        <action name="VerPedidos" class="action.cliente.VerPedidosAction">
+            <result name="SUCCESS">mispedidos.jsp</result>
+            <result name="ERROR">index.jsp</result>
+        </action>
+           
+        <action name="VerDetallesPedido" class="action.cliente.VerDetallesPedidoAction">
+            <result name="SUCCESS">verDetallesPedido.jsp</result>
+            <result name="ERROR">index.jsp</result>
+        </action>
+        
+        <action name="DeshacerPedido" class="action.cliente.DeshacerPedidoAction">
+            <result name="SUCCESS" type="redirect">cesta.jsp</result>
+        </action>
+        
+        <action name="ActualizarDatosEnvio" class="action.cliente.ActualizarDatosEnvioAction">
+             <interceptor-ref name="sessionExpirayStack" />
+            <result name="SUCCESS">cesta.jsp</result>
+            <result name="ERROR">cesta.jsp</result>
+            <result name="session">errorSesion.jsp</result>
+        </action>
+        
+        <action name="VerPedidosAdmin" class="action.admin.VerPedidosAdminAction">
+            <result name="SUCCESS">verPedidosAdmin.jsp</result>
+            <result name="ERROR">mainadmin.jsp</result>
+        </action>
+  
+        <action name="VerPedidoAdmin" class="action.admin.VerDetallesPedidoAction">
+            <result name="SUCCESS">verDetallesPedidoAdmin.jsp</result>
+            <result name="ERROR" >verPedidosAdmin.jsp</result>
+        </action>
+        
+        <action name="CambiarEstado" class="action.admin.CambiarEstadoAction">
+              <interceptor-ref name="sessionExpirayStack" />
+            <result name="SUCCESS" type="chain">VerPedidosAdmin</result>
+            <result name="ERROR" >verPedidosAdmin.jsp</result>
+            <result name="input" type="chain">VerPedidosAdmin</result>
+            <result name="session">errorSesion.jsp</result>
+        </action>
+        
+        <action name="EstadisticasPedidos" class="action.admin.EstadisticasPedidosAction">
+         <interceptor-ref name="sessionExpirayStack" />
+            <result name="SUCCESS">mainadmin.jsp</result>
+            <result name="ERROR" >mainadmin.jsp</result>
+            <result name="session">errorSesion.jsp</result>
+            
+        </action>
+        
+        <action name="http404">
+         <result type="httpheader">
+            <param name="error">404</param>
+            <param name="errorMessage">Lo sentimos el recurso enviar CV no se encuentra disponible en este momento, inténtelo de nuevo más tarde.</param>
+         </result>
+        </action>
+        
+    </package>
+</struts>
