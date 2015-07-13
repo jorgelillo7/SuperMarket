@@ -1,0 +1,3 @@
+-- Creamos la data base primero, luego creamos las tablas
+CREATE DATABASE "SuperMarket" OWNER postgres;
+

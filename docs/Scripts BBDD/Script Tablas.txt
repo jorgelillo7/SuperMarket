@@ -1,0 +1,139 @@
+-- Table: "Cliente"
+
+-- DROP TABLE "Cliente";
+
+CREATE TABLE "Cliente"
+(
+  "userName" text NOT NULL,
+  pass text NOT NULL,
+  nombre text,
+  apellido text,
+  telefono text,
+  email text NOT NULL,
+  privilegios integer NOT NULL,
+  baneado integer NOT NULL,
+  tarjeta text,
+  CONSTRAINT pk_cliente PRIMARY KEY ("userName")
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "Cliente"
+  OWNER TO postgres;
+
+-- Dato básico para la app
+Insert into "Cliente" values ('admin','admin','-','-','-','admin@email.com',1,0,'-');
+
+
+-- Table: "Direccion"
+
+-- DROP TABLE "Direccion";
+
+CREATE TABLE "Direccion"
+(
+  "userNameCli" text NOT NULL,
+  tipo text NOT NULL,
+  nombre text NOT NULL,
+  numero integer NOT NULL,
+  piso integer NOT NULL,
+  puerta text NOT NULL,
+  codigopostal integer NOT NULL,
+  localidad text NOT NULL,
+  provincia text NOT NULL,
+  pais text NOT NULL,
+  CONSTRAINT usernamecli_unique UNIQUE ("userNameCli")
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "Direccion"
+  OWNER TO postgres;
+
+
+-- Table: "DireccionPedidos"
+
+-- DROP TABLE "DireccionPedidos";
+
+CREATE TABLE "DireccionPedidos"
+(
+  tipo text NOT NULL,
+  nombre text NOT NULL,
+  numero integer NOT NULL,
+  piso integer NOT NULL,
+  puerta text NOT NULL,
+  codigopostal integer NOT NULL,
+  localidad text NOT NULL,
+  provincia text NOT NULL,
+  pais text NOT NULL,
+  id_pedido integer NOT NULL
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE "DireccionPedidos"
+  OWNER TO postgres;
+
+
+-- Table: "LineaPedido"
+
+-- DROP TABLE "LineaPedido";
+
+CREATE TABLE "LineaPedido"
+(
+  id_pedido serial NOT NULL,
+  cantidad integer,
+  precio double precision,
+  id_producto serial NOT NULL,
+  total double precision
+)
+WITH (
+  OIDS=TRUE
+);
+ALTER TABLE "LineaPedido"
+  OWNER TO postgres;
+
+
+-- Table: "Pedido"
+
+-- DROP TABLE "Pedido";
+
+CREATE TABLE "Pedido"
+(
+  "precioTotal" double precision,
+  creacion timestamp without time zone,
+  estado integer,
+  "user" text,
+  id_pedido integer NOT NULL,
+  CONSTRAINT "Pedido_pkey" PRIMARY KEY (id_pedido)
+)
+WITH (
+  OIDS=TRUE
+);
+ALTER TABLE "Pedido"
+  OWNER TO postgres;
+
+
+-- Table: "Producto"
+
+-- DROP TABLE "Producto";
+
+CREATE TABLE "Producto"
+(
+  nombre text NOT NULL,
+  seccion text NOT NULL,
+  categoria text NOT NULL,
+  precio double precision NOT NULL,
+  pais text NOT NULL,
+  descripcion text NOT NULL,
+  oferta boolean NOT NULL,
+  destacado boolean NOT NULL,
+  imagen boolean NOT NULL,
+  visible boolean NOT NULL,
+  id_producto serial NOT NULL,
+  CONSTRAINT productounique UNIQUE (id_producto)
+)
+WITH (
+  OIDS=TRUE
+);
+ALTER TABLE "Producto"
+  OWNER TO postgres;
